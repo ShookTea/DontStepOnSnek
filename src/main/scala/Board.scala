@@ -1,6 +1,7 @@
 package eu.shooktea.dsos
 
-import Types._
+import Utils._
+import TypeAddons._
 
 import scala.util.Random
 
@@ -21,6 +22,16 @@ class Board(width: Int, height: Int, snake: Snake) {
     }
   }
 
+  def moveForward(): Board = move(snake.head - snake.tail.head)
+  def moveLeft(): Board = move((snake.head - snake.tail.head).rotateLeft)
+  def moveRight(): Board = move((snake.head - snake.tail.head).rotateRight)
+
+  private def move(direction: Point): Board = {
+    val newHead = snake.head + direction
+    val newSnake = newHead :: snake dropRight 1
+
+    new Board(width, height, newSnake)
+  }
 }
 object Board {
   val random = new Random()
@@ -56,10 +67,13 @@ object Board {
     val headX = random.nextInt(maxX - minX) + minX
     val headY = random.nextInt(maxY - minY) + minY
 
+    val head = Point(headX, headY)
+    val diff = Point(xDiffForBody, yDiffForBody)
+
     List(
-      (headX, headY),
-      (headX + xDiffForBody, headY + yDiffForBody),
-      (headX + 2 * xDiffForBody, headY + 2 * yDiffForBody),
+      head,
+      head + diff,
+      head + 2 * diff,
     )
   }
 }
