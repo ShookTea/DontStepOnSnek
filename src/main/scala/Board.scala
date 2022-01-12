@@ -3,7 +3,6 @@ package eu.shooktea.dsos
 import Utils._
 import TypeAddons._
 
-
 class Board(width: Int, height: Int, snake: Snake, food: Point) {
   override def toString: String =
     "#".repeat(width + 2) + "\n" + boardToString.mkString("\n") + "\n" + "#".repeat(width + 2)
@@ -31,14 +30,18 @@ class Board(width: Int, height: Int, snake: Snake, food: Point) {
       throw new Exception("GAME OVER - snek hit wall, is ded now")
     }
 
-    val newTail = snake dropRight 1
+    val eatFood = newHead == food
+
+    val newTail = if (eatFood) snake else snake dropRight 1
+
     if (newTail contains newHead) {
       throw new Exception("GAME OVER - snek bit itself, is ded now")
     }
 
     val newSnake = newHead :: newTail
+    val newFood = if (eatFood) Board.randomFood(width, height, newSnake) else food
 
-    new Board(width, height, newSnake, food)
+    new Board(width, height, newSnake, newFood)
   }
 }
 object Board {
