@@ -24,6 +24,8 @@ class Board(width: Int, height: Int, snake: Snake, food: Point) {
   def moveLeft(): Board = move((snake.head - snake.tail.head).rotateLeft)
   def moveRight(): Board = move((snake.head - snake.tail.head).rotateRight)
 
+  def points: Int = snake.length - 3
+
   private def move(direction: Point): Board = {
     val newHead = snake.head + direction
     if (newHead.x < 0 || newHead.y < 0 || newHead.x >= width || newHead.y >= height) {
