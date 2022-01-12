@@ -20,11 +20,11 @@ class Board(width: Int, height: Int, snake: Snake, food: Point) {
     }
   }
 
+  def points: Int = snake.length - 3
+
   def moveForward(): Board = move(snake.head - snake.tail.head)
   def moveLeft(): Board = move((snake.head - snake.tail.head).rotateLeft)
   def moveRight(): Board = move((snake.head - snake.tail.head).rotateRight)
-
-  def points: Int = snake.length - 3
 
   private def move(direction: Point): Board = {
     val newHead = snake.head + direction
@@ -36,7 +36,7 @@ class Board(width: Int, height: Int, snake: Snake, food: Point) {
 
     val newTail = if (eatFood) snake else snake dropRight 1
 
-    if (newTail contains newHead) {
+    if (newHead in newTail) {
       throw new Exception("GAME OVER - snek bit itself, is ded now")
     }
 
@@ -44,6 +44,37 @@ class Board(width: Int, height: Int, snake: Snake, food: Point) {
     val newFood = if (eatFood) Board.randomFood(width, height, newSnake) else food
 
     new Board(width, height, newSnake, newFood)
+  }
+
+  def getDistanceForDirection(direction: Point, mapSize: Double, isAngled: Boolean): Distance = {
+    val multiplier = if (isAngled) Math.sqrt(2.0) else 1.0
+
+    var currentPoint = snake.head
+    var foodDistance: Option[Double] = None
+    var bodyDistance: Option[Double] = None
+    var wallDistance: Option[Double] = None
+    var countedDistance = 0
+
+    while (wallDistance.isEmpty) {
+      countedDistance += 1
+      currentPoint += direction
+
+      if (currentPoint == food) {
+        foodDistance = Some(countedDistance * multiplier)
+      }
+      if ((currentPoint in snake) && bodyDistance.isEmpty) {
+        bodyDistance = Some(countedDistance * multiplier)
+      }
+      if (currentPoint.x < 0 || currentPoint.x >= width || currentPoint.y < 0 || currentPoint.y >= height) {
+        wallDistance = Some(countedDistance * multiplier)
+      }
+    }
+
+    Distance(
+      foodDistance.getOrElse(mapSize) / mapSize,
+      wallDistance.getOrElse(mapSize) / mapSize,
+      bodyDistance.getOrElse(mapSize) / mapSize,
+    )
   }
 }
 object Board {
