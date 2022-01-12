@@ -4,11 +4,7 @@ import Utils._
 import TypeAddons._
 
 
-class Board(width: Int, height: Int, snake: Snake) {
-  val food: Point = Point.matrix(width, height)
-    .without(snake)
-    .random.getOrElse(throw new Exception("GAME OVER - no more food to eat!"))
-
+class Board(width: Int, height: Int, snake: Snake, food: Point) {
   override def toString: String =
     "#".repeat(width + 2) + "\n" + boardToString.mkString("\n") + "\n" + "#".repeat(width + 2)
 
@@ -42,11 +38,19 @@ class Board(width: Int, height: Int, snake: Snake) {
 
     val newSnake = newHead :: newTail
 
-    new Board(width, height, newSnake)
+    new Board(width, height, newSnake, food)
   }
 }
 object Board {
-  def apply(width: Int, height: Int): Board = new Board(width, height, randomSnake(width, height))
+  def apply(width: Int, height: Int): Board = {
+    val snake = randomSnake(width, height)
+    new Board(width, height, snake, randomFood(width, height, snake))
+  }
+
+  def randomFood(width: Int, height: Int, snake: Snake): Point =
+    Point.matrix(width, height)
+    .without(snake)
+    .random.getOrElse(throw new Exception("GAME OVER - no more food to eat!"))
 
   private def randomSnake(width: Int, height: Int): Snake = {
     val snakeDirection = Utils.random.nextInt(4)
