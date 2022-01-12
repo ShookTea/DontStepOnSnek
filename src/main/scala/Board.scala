@@ -58,10 +58,14 @@ class Board(width: Int, height: Int, snake: Snake, food: Point) {
       getDistanceForDirection(forwardDirection.backwards, forwardDistance, isAngled = false),
       getDistanceForDirection(forwardDirection.rotateLeft, sideDistance, isAngled = false),
       getDistanceForDirection(forwardDirection.rotateRight, sideDistance, isAngled = false),
+      getDistanceForDirection(forwardDirection.halfLeft, angledDistance, isAngled = true),
+      getDistanceForDirection(forwardDirection.halfRight, angledDistance, isAngled = true),
+      getDistanceForDirection(forwardDirection.rotateLeft.halfLeft, angledDistance, isAngled = true),
+      getDistanceForDirection(forwardDirection.rotateRight.halfRight, angledDistance, isAngled = true),
     )
   }
 
-  def getDistanceForDirection(direction: Point, mapSize: Double, isAngled: Boolean): Distance = {
+  private def getDistanceForDirection(direction: Point, mapSize: Double, isAngled: Boolean): Distance = {
     val multiplier = if (isAngled) Math.sqrt(2.0) else 1.0
 
     var currentPoint = snake.head

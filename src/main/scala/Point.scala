@@ -15,6 +15,24 @@ case class Point(x: Int, y: Int) {
     if (y == 0) -x else 0,
   )
 
+  def halfLeft: Point = Point(
+    if (x == 0) y
+      else if (x == -y) 0
+      else x,
+    if (y == 0) -x
+      else if (y == x) 0
+      else y
+  )
+
+  def halfRight: Point = Point(
+    if (x == 0) -y
+      else if (x == y) 0
+      else x,
+    if (y == 0) x
+      else if (y == -x) 0
+      else y
+  )
+
   def rotateRight: Point = Point(
     if (x == 0) -y else 0,
     if (y == 0) x else 0,

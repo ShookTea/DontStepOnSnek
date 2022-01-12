@@ -5,4 +5,8 @@ case class Input(
                 backward: Distance,
                 left: Distance,
                 right: Distance,
+                forwardLeft: Distance,
+                forwardRight: Distance,
+                backwardLeft: Distance,
+                backwardRight: Distance
                 )
