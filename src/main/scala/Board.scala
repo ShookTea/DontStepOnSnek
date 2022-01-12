@@ -28,7 +28,16 @@ class Board(width: Int, height: Int, snake: Snake) {
 
   private def move(direction: Point): Board = {
     val newHead = snake.head + direction
-    val newSnake = newHead :: snake dropRight 1
+    if (newHead.x < 0 || newHead.y < 0 || newHead.x >= width || newHead.y >= height) {
+      throw new Exception("GAME OVER - snek hit wall, is ded now")
+    }
+
+    val newTail = snake dropRight 1
+    if (newTail contains newHead) {
+      throw new Exception("GAME OVER - snek bit itself, is ded now")
+    }
+
+    val newSnake = newHead :: newTail
 
     new Board(width, height, newSnake)
   }
