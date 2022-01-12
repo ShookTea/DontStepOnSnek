@@ -3,9 +3,11 @@ package eu.shooktea.dsos
 import Utils._
 import TypeAddons._
 
-import scala.util.Random
 
 class Board(width: Int, height: Int, snake: Snake) {
+  val food: Point = Point.matrix(width, height)
+    .without(snake)
+    .random.getOrElse(throw new Exception("GAME OVER - no more food to eat!"))
 
   override def toString: String =
     "#".repeat(width + 2) + "\n" + boardToString.mkString("\n") + "\n" + "#".repeat(width + 2)
@@ -18,6 +20,7 @@ class Board(width: Int, height: Int, snake: Snake) {
       if (snake.head == (x, y)) "@"
       else if (snake.last == (x, y)) "+"
       else if (snake contains (x, y)) "*"
+      else if (food == (x, y)) "&"
       else " "
     }
   }
@@ -43,12 +46,10 @@ class Board(width: Int, height: Int, snake: Snake) {
   }
 }
 object Board {
-  val random = new Random()
-
   def apply(width: Int, height: Int): Board = new Board(width, height, randomSnake(width, height))
 
   private def randomSnake(width: Int, height: Int): Snake = {
-    val snakeDirection = random.nextInt(4)
+    val snakeDirection = Utils.random.nextInt(4)
     var minX = 0
     var minY = 0
     var maxX = width

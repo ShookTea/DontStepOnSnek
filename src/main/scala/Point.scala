@@ -26,3 +26,13 @@ case class Point(x: Int, y: Int) {
     case _ => false
   }
 }
+
+object Point {
+  def matrix(width: Int, height: Int): Seq[Point] =
+    for (x <- 0 until width; y <- 0 until height) yield Point(x, y)
+
+  implicit class MatrixOps(matrix: Seq[Point]) {
+    def without(points: Seq[Point]): Seq[Point] = matrix.filterNot(points.contains)
+    def random: Option[Point] = Utils.random.shuffle(matrix).headOption
+  }
+}
