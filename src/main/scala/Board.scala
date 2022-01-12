@@ -62,19 +62,19 @@ object Board {
     var yDiffForBody = 0
 
     if (snakeDirection == 0) { // left to right
-      minX += 3
-      xDiffForBody = 1
-    }
-    if (snakeDirection == 1) { // right to left
-      maxX -= 3
+      minX += 2
       xDiffForBody = -1
     }
+    if (snakeDirection == 1) { // right to left
+      maxX -= 2
+      xDiffForBody = 1
+    }
     if (snakeDirection == 2) { // up to bottom
-      minY += 3
+      minY += 2
       yDiffForBody = -1
     }
     if (snakeDirection == 3) { // bottom to up
-      maxY -= 3
+      maxY -= 2
       yDiffForBody = 1
     }
 
