@@ -46,6 +46,21 @@ class Board(width: Int, height: Int, snake: Snake, food: Point) {
     new Board(width, height, newSnake, newFood)
   }
 
+  def getNeuralNetworkInput: Input = {
+    val forwardDirection = snake.head - snake.tail.head
+    val isHorizontal = forwardDirection.x != 0
+    val forwardDistance = 1.0 * (if (isHorizontal) width else height)
+    val sideDistance = 1.0 * (if (isHorizontal) height else width)
+    val angledDistance = Math.sqrt(forwardDistance * forwardDistance + sideDistance * sideDistance)
+
+    Input(
+      getDistanceForDirection(forwardDirection, forwardDistance, isAngled = false),
+      getDistanceForDirection(forwardDirection.backwards, forwardDistance, isAngled = false),
+      getDistanceForDirection(forwardDirection.rotateLeft, sideDistance, isAngled = false),
+      getDistanceForDirection(forwardDirection.rotateRight, sideDistance, isAngled = false),
+    )
+  }
+
   def getDistanceForDirection(direction: Point, mapSize: Double, isAngled: Boolean): Distance = {
     val multiplier = if (isAngled) Math.sqrt(2.0) else 1.0
 

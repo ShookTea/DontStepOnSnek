@@ -20,6 +20,8 @@ case class Point(x: Int, y: Int) {
     if (y == 0) x else 0,
   )
 
+  def backwards: Point = Point(-x, -y)
+
   def in(seq: Seq[Point]): Boolean = seq contains this
 
   override def equals(obj: Any): Boolean = obj match {
