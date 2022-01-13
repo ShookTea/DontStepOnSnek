@@ -14,7 +14,7 @@ class NetworkClass(neuralNetworks: Seq[NeuralNetwork], generation: Int) {
     newGeneration(bestNetworks.toMap.keySet)
   }
 
-  private def newGeneration(bestNetworks: Set[NeuralNetwork]) = {
+  private def newGeneration(bestNetworks: Set[NeuralNetwork]): Seq[NeuralNetwork] = {
     val pairings = bestNetworks.subsets()
       .map(_.toSeq)
       .filter(_.length == 2)
@@ -22,10 +22,14 @@ class NetworkClass(neuralNetworks: Seq[NeuralNetwork], generation: Int) {
       .filter{ case (a, b) => a.identifier != b.identifier}
 
     val children = pairings
-      .map{ case (a, b) => NeuralNetwork.createChild(a, b) }
+      .flatMap{ case (a, b) => NeuralNetwork.createChildren(a, b, NetworkClass.mutationCount) }
+      .toSeq
 
-//    children.foreach(nn => println(s"${nn.identifier} + (gen. ${nn.generation}) - ${nn.lineage}"))
-    println(children.length)
+    val bestNetworksMutations = bestNetworks
+      .flatMap(nn => NeuralNetwork.mutate(nn, NetworkClass.mutationCount).prepended(nn))
+      .toSeq
+
+    children.concat(bestNetworksMutations)
   }
 
   private def runTests(): Seq[(NeuralNetwork, TestResult)] = {

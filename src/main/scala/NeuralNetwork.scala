@@ -53,6 +53,9 @@ object NeuralNetwork {
     1,
   )
 
+  def mutate(nn: NeuralNetwork, mutationCount: Int): Seq[NeuralNetwork] =
+    for (_ <- 1 to mutationCount) yield mutate(nn)
+
   def mutate(nn: NeuralNetwork): NeuralNetwork = new NeuralNetwork(
     mutateWeights(nn.weights),
     Utils.randomIdentifier(),
@@ -64,7 +67,19 @@ object NeuralNetwork {
     w => if (Utils.random.nextDouble() < mutationProbability) Utils.randomWeight() else w
   )
 
-  def createChild(a: NeuralNetwork, b: NeuralNetwork): NeuralNetwork = new NeuralNetwork(
+  def createChildren(a: NeuralNetwork, b: NeuralNetwork, mutationCount: Int): Seq[NeuralNetwork] = {
+    val child = createChild(a, b)
+    for (i <- 0 to mutationCount) yield
+      if (i == 0) child
+      else new NeuralNetwork(
+        mutateWeights(child.weights),
+        Utils.randomIdentifier(),
+        child.generation,
+        child.lineage
+      )
+  }
+
+  private def createChild(a: NeuralNetwork, b: NeuralNetwork): NeuralNetwork = new NeuralNetwork(
     mixWeights(a, b),
     Utils.randomIdentifier(),
     Math.max(a.generation, b.generation) + 1,
