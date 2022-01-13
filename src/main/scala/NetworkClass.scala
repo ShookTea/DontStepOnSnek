@@ -11,7 +11,7 @@ class NetworkClass(neuralNetworks: Seq[NeuralNetwork], generation: Int) {
     }
   }
 
-  private def runTests(): Seq[(NeuralNetwork, Double)] = {
+  private def runTests(): Seq[(NeuralNetwork, TestResult)] = {
     NetworkClass.printClassProgress(0, replace = false)
     val results = neuralNetworks.zipWithIndex.map{
       case (nn, index) =>
