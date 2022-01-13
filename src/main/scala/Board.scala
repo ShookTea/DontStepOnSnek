@@ -22,6 +22,8 @@ class Board(width: Int, height: Int, snake: Snake, food: Point) {
 
   def points: Int = snake.length - 3
 
+  def distanceToFood: Double = Math.sqrt(Math.pow(food.x - snake.head.x, 2.0) + Math.pow(food.y - snake.head.y, 2.0))
+
   def moveForward(): Board = move(snake.head - snake.tail.head)
   def moveLeft(): Board = move((snake.head - snake.tail.head).rotateLeft)
   def moveRight(): Board = move((snake.head - snake.tail.head).rotateRight)

@@ -18,8 +18,8 @@ class NetworkClass(val neuralNetworks: Seq[NeuralNetwork], val generation: Int) 
 }
 
 object NetworkClass {
-  val graduationCount: Int = 5
-  val mutationCount: Int = 5
+  val graduationCount: Int = 12
+  val mutationCount: Int = 4
   val classSize: Int = ((mutationCount + 1) * graduationCount * (graduationCount + 1)) / 2
 
   def evolve(networkClass: NetworkClass): NetworkClass = {
@@ -28,7 +28,7 @@ object NetworkClass {
 
     println("Best results:")
     bestNetworks.foreach{
-      case (nn, result) => println(f"${result.grade}%.4f (F=${result.foodEaten}, M=${result.remainingMovePoints}) - ${nn.identifier} (gen. ${nn.generation})")
+      case (nn, result) => println(f"${result.grade}%.4f (F=${result.foodEaten}, M=${result.remainingMovePoints}, A=${result.movesGoingAway}) - ${nn.identifier} (gen. ${nn.generation})")
     }
 
     val mutations = createMutations(bestNetworks.toMap.keySet)

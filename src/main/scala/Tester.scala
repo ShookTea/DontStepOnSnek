@@ -1,7 +1,7 @@
 package eu.shooktea.dsos
 
 object Tester {
-  val testIterations = 15
+  val testIterations = 5
   val mapWidth = 50
   val mapHeight = 15
   val startingMovePoints = 200
@@ -17,6 +17,8 @@ object Tester {
     var board = Board(mapWidth, mapHeight)
     var movePoints = startingMovePoints
     var foodEaten = 0
+    var movesGoingAway = 0
+    var currentDistanceToFood = board.distanceToFood
 
     try {
       while (movePoints > 0) {
@@ -28,15 +30,21 @@ object Tester {
           else if (output.shouldGoRight()) board.moveRight()
           else board.moveForward()
 
+        var eaten = false
         if (board.points > foodEaten) {
           foodEaten = board.points
           movePoints += movePointsPerFood
+          eaten = true
+        }
+        val newCurrentDistanceToFood = board.distanceToFood
+        if (newCurrentDistanceToFood > currentDistanceToFood && !eaten) {
+          movesGoingAway += 1
         }
       }
     } catch {
       case e: GameOverException =>
     }
 
-    TestResult(foodEaten, movePoints)
+    TestResult(foodEaten, movePoints, movesGoingAway)
   }
 }
