@@ -45,10 +45,23 @@ object NeuralNetwork {
 
   val weightCount: Int = inputNeurons * hiddenNeurons + hiddenNeurons * outputNeurons
 
+  val mutationProbability: Double = 0.07
+
   def random(): NeuralNetwork = new NeuralNetwork(
-    for (_ <- 1 to weightCount) yield 2.0 * (Utils.random.nextDouble() - 0.5),
+    for (_ <- 1 to weightCount) yield Utils.randomWeight(),
     Utils.randomIdentifier(),
     1,
+  )
+
+  def mutate(nn: NeuralNetwork): NeuralNetwork = new NeuralNetwork(
+    mutateWeights(nn.weights),
+    Utils.randomIdentifier(),
+    nn.generation + 1,
+    nn.lineage.prepended(nn.identifier),
+  )
+
+  private def mutateWeights(weights: Seq[Double]): Seq[Double] = weights.map(
+    w => if (Utils.random.nextDouble() < mutationProbability) Utils.randomWeight() else w
   )
 
   def createChild(a: NeuralNetwork, b: NeuralNetwork): NeuralNetwork = new NeuralNetwork(
