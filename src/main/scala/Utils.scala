@@ -6,6 +6,8 @@ object Utils {
   type Snake = List[Point]
 
   val random = new Random()
+
+  def max(values: Double*): Double = values.max
 }
 
 object TypeAddons {
