@@ -19,6 +19,7 @@ object Main {
 
 
     val neuralNetwork = NeuralNetwork.random()
-    neuralNetwork(board.getNeuralNetworkInput)
+    val output = neuralNetwork(board.getNeuralNetworkInput)
+    println(output)
   }
 }

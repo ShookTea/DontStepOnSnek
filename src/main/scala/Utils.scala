@@ -14,6 +14,7 @@ object TypeAddons {
   }
 
   implicit class DoubleAddons(double: Double) {
-    def sigmoid: Double = 1.0 / (1.0 + Math.pow(Math.E, -0.7 * (double - 7.5)))
+//    def sigmoid: Double = 1.0 / (1.0 + Math.pow(Math.E, -0.7 * (double - 7.5)))
+    def sigmoid: Double = 1.0 / (1.0 + Math.pow(Math.E, -1 * double))
   }
 }
