@@ -13,6 +13,6 @@ case class TestResult(foodEaten: Int, remainingMovePoints: Int) extends Ordered[
 }
 
 object TestResult {
-  val foodWeight = 5.0
+  val foodWeight = 7.0
   val remainingMovesWeight = 2.0
 }

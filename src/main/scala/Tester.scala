@@ -1,11 +1,11 @@
 package eu.shooktea.dsos
 
 object Tester {
-  val testIterations = 10
+  val testIterations = 15
   val mapWidth = 50
   val mapHeight = 15
-  val startingMovePoints = 300
-  val movePointsPerFood = 100
+  val startingMovePoints = 200
+  val movePointsPerFood = 90
 
   def testNetwork(neuralNetwork: NeuralNetwork): TestResult =
     getIterationsResults(neuralNetwork).reduce(_ + _)
