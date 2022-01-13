@@ -29,6 +29,8 @@ class NeuralNetwork(
   private def getPartsForHiddenNeuron(h: Int, input: Input): Seq[Double] =
     for (i <- 0 until inputNeurons)
       yield input(i) * weights(h * inputNeurons + i)
+
+  override def toString: String = identifier
 }
 
 object NeuralNetwork {
