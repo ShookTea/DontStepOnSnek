@@ -3,22 +3,30 @@ package eu.shooktea.dsos
 class NetworkClass(neuralNetworks: Seq[NeuralNetwork], generation: Int) {
   def run(): Unit = {
     println(s"Running tests on ${neuralNetworks.length} neural networks of generation $generation...")
-    runTests()
+
+    val results = runTests()
+    val bestNetworks = results.sortBy(_._2).reverse.slice(0, NetworkClass.graduationCount)
+    bestNetworks.foreach{
+      case (_, result) => println(result)
+    }
   }
 
   private def runTests(): Seq[(NeuralNetwork, Double)] = {
     NetworkClass.printClassProgress(0, replace = false)
-    neuralNetworks.zipWithIndex.map{
+    val results = neuralNetworks.zipWithIndex.map{
       case (nn, index) =>
         val result = Tester.testNetwork(nn)
         NetworkClass.printClassProgress(index)
         (nn, result)
     }
+    println()
+    results
   }
 }
 
 object NetworkClass {
-  val classSize = 2000
+  val classSize = 100
+  val graduationCount = 10
 
   def apply(neuralNetworks: Seq[NeuralNetwork], generation: Int = 1): NetworkClass =
     new NetworkClass(neuralNetworks, generation)
