@@ -9,9 +9,11 @@ object Tester {
   val foodWeight = 5.0
   val remainingMovesWeight = 2.0
 
-  def testNetwork(neuralNetwork: NeuralNetwork) = {
-    println(testIteration(neuralNetwork))
-  }
+  def testNetwork(neuralNetwork: NeuralNetwork): Double =
+    getIterationsResults(neuralNetwork).sum
+
+  private def getIterationsResults(nn: NeuralNetwork): Seq[Double] =
+    for (_ <- 1 to testIterations) yield testIteration(nn)
 
   private def testIteration(nn: NeuralNetwork): Double = {
     var board = Board(mapWidth, mapHeight)
@@ -34,7 +36,7 @@ object Tester {
         }
       }
     } catch {
-      case e: GameOverException => println(e.getMessage)
+      case e: GameOverException =>
     }
 
     (movePoints * remainingMovesWeight + currentPoints * foodWeight) / (remainingMovesWeight + foodWeight)
