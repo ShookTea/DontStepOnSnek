@@ -18,8 +18,8 @@ class NetworkClass(val neuralNetworks: Seq[NeuralNetwork], val generation: Int) 
 }
 
 object NetworkClass {
-  val graduationCount: Int = 10
-  val mutationCount: Int = 39
+  val graduationCount: Int = 5
+  val mutationCount: Int = 5
   val classSize: Int = ((mutationCount + 1) * graduationCount * (graduationCount + 1)) / 2
 
   def evolve(networkClass: NetworkClass): NetworkClass = {

@@ -4,7 +4,7 @@ import scala.annotation.tailrec
 
 object Main {
   def main(args: Array[String]): Unit = {
-    val resultingClass = runIterations(50)
+    val resultingClass = runIterations(100)
 
     val bestNetwork = resultingClass.getBest.head._1
     var board = Board(50, 15)
@@ -13,7 +13,7 @@ object Main {
     try {
       while (movePoints > 0) {
         println(board)
-        Thread.sleep(100)
+        Thread.sleep(50)
         movePoints -= 0
         val output = bestNetwork(board.getNeuralNetworkInput)
         val pointsBeforeMove = board.points
