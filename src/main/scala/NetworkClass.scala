@@ -11,7 +11,21 @@ class NetworkClass(neuralNetworks: Seq[NeuralNetwork], generation: Int) {
       case (nn, result) => println(f"${result.grade}%.4f (F=${result.foodEaten}, M=${result.remainingMovePoints}) - ${nn.identifier} (gen. ${nn.generation})")
     }
 
-    NetworkClass.newGeneration(this, bestNetworks.toMap.keySet)
+    newGeneration(bestNetworks.toMap.keySet)
+  }
+
+  private def newGeneration(bestNetworks: Set[NeuralNetwork]) = {
+    val pairings = bestNetworks.subsets()
+      .map(_.toSeq)
+      .filter(_.length == 2)
+      .map(pair => (pair.head, pair(1)))
+      .filter{ case (a, b) => a.identifier != b.identifier}
+
+    val children = pairings
+      .map{ case (a, b) => NeuralNetwork.createChild(a, b) }
+
+//    children.foreach(nn => println(s"${nn.identifier} + (gen. ${nn.generation}) - ${nn.lineage}"))
+    println(children.length)
   }
 
   private def runTests(): Seq[(NeuralNetwork, TestResult)] = {
@@ -28,20 +42,12 @@ class NetworkClass(neuralNetworks: Seq[NeuralNetwork], generation: Int) {
 }
 
 object NetworkClass {
-  val classSize = 100
-  val graduationCount = 10
+  val graduationCount: Int = 10
+  val mutationCount: Int = 39
+  val classSize: Int = ((mutationCount + 1) * graduationCount * (graduationCount + 1)) / 2
 
   def apply(neuralNetworks: Seq[NeuralNetwork], generation: Int = 1): NetworkClass =
     new NetworkClass(neuralNetworks, generation)
-
-  def newGeneration(oldGeneration: NetworkClass, bestNetworks: Set[NeuralNetwork]) = {
-    val pairings = bestNetworks.subsets()
-      .map(_.toSeq)
-      .filter(_.length == 2)
-      .filter(pair => pair.head.identifier != pair(1).identifier)
-
-    println(pairings.length)
-  }
 
   def random(): NetworkClass =
     NetworkClass(for (_ <- 0 until classSize) yield NeuralNetwork.random())

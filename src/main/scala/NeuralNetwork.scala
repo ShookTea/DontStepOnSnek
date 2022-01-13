@@ -1,13 +1,18 @@
 package eu.shooktea.dsos
 
-import NeuralNetwork.{hiddenNeurons, inputNeurons, outputNeurons}
+import NeuralNetwork._
 import TypeAddons._
 
 class NeuralNetwork(
                      val weights: Seq[Double],
                      val identifier: String,
-                     val generation: Int
+                     val generation: Int,
+                     val lineage: Seq[String] = Seq()
                    ) {
+  if (weights.length != weightCount) {
+    throw new Exception("Invalid weight count")
+  }
+
   def apply(input: Input): Output =
     Output(calculateOutputNeurons(input))
 
@@ -45,4 +50,16 @@ object NeuralNetwork {
     Utils.randomIdentifier(),
     1,
   )
+
+  def createChild(a: NeuralNetwork, b: NeuralNetwork): NeuralNetwork = new NeuralNetwork(
+    mixWeights(a, b),
+    Utils.randomIdentifier(),
+    Math.max(a.generation, b.generation) + 1,
+    Seq(a.identifier + " + " + b.identifier)
+  )
+
+  private def mixWeights(a: NeuralNetwork, b: NeuralNetwork): Seq[Double] =
+    a.weights.zip(b.weights).map {
+      case (aw, bw) => if (Utils.random.nextBoolean()) aw else bw
+    }
 }
