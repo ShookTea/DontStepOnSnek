@@ -1,5 +1,6 @@
 package eu.shooktea.dsos
 
+import java.util.UUID
 import scala.util.Random
 
 object Utils {
@@ -8,6 +9,8 @@ object Utils {
   val random = new Random()
 
   def max(values: Double*): Double = values.max
+
+  def randomIdentifier(): String = UUID.randomUUID().toString
 }
 
 object TypeAddons {

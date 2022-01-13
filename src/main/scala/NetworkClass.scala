@@ -6,8 +6,9 @@ class NetworkClass(neuralNetworks: Seq[NeuralNetwork], generation: Int) {
 
     val results = runTests()
     val bestNetworks = results.sortBy(_._2).reverse.slice(0, NetworkClass.graduationCount)
+    println("Best results:")
     bestNetworks.foreach{
-      case (_, result) => println(result)
+      case (nn, result) => println(f"${result.grade}%.4f (F=${result.foodEaten}, M=${result.remainingMovePoints}) - ${nn.identifier} (gen. ${nn.generation})")
     }
   }
 

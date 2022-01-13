@@ -3,7 +3,11 @@ package eu.shooktea.dsos
 import NeuralNetwork.{hiddenNeurons, inputNeurons, outputNeurons}
 import TypeAddons._
 
-class NeuralNetwork(weights: Seq[Double]) {
+class NeuralNetwork(
+                     val weights: Seq[Double],
+                     val identifier: String,
+                     val generation: Int
+                   ) {
   def apply(input: Input): Output =
     Output(calculateOutputNeurons(input))
 
@@ -35,6 +39,8 @@ object NeuralNetwork {
   val weightCount: Int = inputNeurons * hiddenNeurons + hiddenNeurons * outputNeurons
 
   def random(): NeuralNetwork = new NeuralNetwork(
-    for (_ <- 1 to weightCount) yield 2.0 * (Utils.random.nextDouble() - 0.5)
+    for (_ <- 1 to weightCount) yield 2.0 * (Utils.random.nextDouble() - 0.5),
+    Utils.randomIdentifier(),
+    1,
   )
 }
