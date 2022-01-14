@@ -7,7 +7,6 @@ class NeuralNetwork(
                      val weights: Seq[Double],
                      val identifier: String,
                      val generation: Int,
-                     val lineage: Seq[String] = Seq()
                    ) {
   if (weights.length != weightCount) {
     throw new Exception("Invalid weight count")
@@ -60,7 +59,6 @@ object NeuralNetwork {
     mutateWeights(nn.weights),
     Utils.randomIdentifier(),
     nn.generation + 1,
-    nn.lineage.prepended(nn.identifier),
   )
 
   private def mutateWeights(weights: Seq[Double]): Seq[Double] = weights.map(
@@ -75,7 +73,6 @@ object NeuralNetwork {
         mutateWeights(child.weights),
         Utils.randomIdentifier(),
         child.generation,
-        child.lineage
       )
   }
 
@@ -83,7 +80,6 @@ object NeuralNetwork {
     mixWeights(a, b),
     Utils.randomIdentifier(),
     Math.max(a.generation, b.generation) + 1,
-    Seq(a.identifier + " + " + b.identifier)
   )
 
   private def mixWeights(a: NeuralNetwork, b: NeuralNetwork): Seq[Double] =
