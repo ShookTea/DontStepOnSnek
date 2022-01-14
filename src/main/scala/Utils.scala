@@ -1,6 +1,5 @@
 package eu.shooktea.dsos
 
-import java.util.UUID
 import scala.util.Random
 
 object Utils {

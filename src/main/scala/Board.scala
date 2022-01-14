@@ -102,7 +102,7 @@ class Board(width: Int, height: Int, snake: Snake, food: Point) {
 }
 object Board {
   def apply(width: Int, height: Int): Board = {
-    val snake = randomSnake(width, height)
+    val snake = buildSnake(width, height)
     new Board(width, height, snake, randomFood(width, height, snake))
   }
 
@@ -111,37 +111,9 @@ object Board {
     .without(snake)
     .random.getOrElse(throw new Exception("GAME OVER - no more food to eat!"))
 
-  private def randomSnake(width: Int, height: Int): Snake = {
-    val snakeDirection = Utils.random.nextInt(4)
-    var minX = 0
-    var minY = 0
-    var maxX = width
-    var maxY = height
-    var xDiffForBody = 0
-    var yDiffForBody = 0
-
-    if (snakeDirection == 0) { // left to right
-      minX += 2
-      xDiffForBody = -1
-    }
-    if (snakeDirection == 1) { // right to left
-      maxX -= 2
-      xDiffForBody = 1
-    }
-    if (snakeDirection == 2) { // up to bottom
-      minY += 2
-      yDiffForBody = -1
-    }
-    if (snakeDirection == 3) { // bottom to up
-      maxY -= 2
-      yDiffForBody = 1
-    }
-
-    val headX = random.nextInt(maxX - minX) + minX
-    val headY = random.nextInt(maxY - minY) + minY
-
-    val head = Point(headX, headY)
-    val diff = Point(xDiffForBody, yDiffForBody)
+  private def buildSnake(width: Int, height: Int): Snake = {
+    val head = Point(width / 2, height / 2)
+    val diff = Point(-1, 0)
 
     List(
       head,
