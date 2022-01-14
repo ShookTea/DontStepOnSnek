@@ -15,8 +15,9 @@ object Main {
   private def runEvolution(startClass: NetworkClass, path: String): NetworkClass = {
     var currentClass = startClass
     while (true) {
-      currentClass = NetworkClass.evolve(currentClass)
+      val newClass = NetworkClass.evolve(currentClass)
       Persistence.save(currentClass, path)
+      currentClass = newClass
     }
     currentClass
   }

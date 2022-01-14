@@ -1,8 +1,15 @@
 package eu.shooktea.dsos
 
 class NetworkClass(val neuralNetworks: Seq[NeuralNetwork], val generation: Int) {
-  def getBest: Seq[(NeuralNetwork, TestResult)] =
-    runTests().sortBy(_._2).reverse.slice(0, Parameter.graduationCount)
+  private var best: Option[Seq[(NeuralNetwork, TestResult)]] = None
+
+  def getBest: Seq[(NeuralNetwork, TestResult)] = {
+    if (best.isEmpty) {
+      val bestCalculated = runTests().sortBy(_._2).reverse.slice(0, Parameter.graduationCount)
+      this.best = Some(bestCalculated)
+    }
+    best.get
+  }
 
   private def runTests(): Seq[(NeuralNetwork, TestResult)] = {
     NetworkClass.printClassProgress(0, replace = false)

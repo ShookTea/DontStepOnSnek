@@ -20,5 +20,8 @@ object Persistence {
     println(" done.")
   }
 
-  private def save(nc: NetworkClass, dos: DataOutputStream): Unit = {}
+  private def save(nc: NetworkClass, dos: DataOutputStream): Unit = {
+    dos.writeInt(nc.generation)
+    val best = nc.getBest
+  }
 }
