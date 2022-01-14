@@ -2,7 +2,7 @@ package eu.shooktea.dsos
 
 class NetworkClass(val neuralNetworks: Seq[NeuralNetwork], val generation: Int) {
   def getBest: Seq[(NeuralNetwork, TestResult)] =
-    runTests().sortBy(_._2).reverse.slice(0, NetworkClass.graduationCount)
+    runTests().sortBy(_._2).reverse.slice(0, Parameter.graduationCount)
 
   private def runTests(): Seq[(NeuralNetwork, TestResult)] = {
     NetworkClass.printClassProgress(0, replace = false)
@@ -18,10 +18,6 @@ class NetworkClass(val neuralNetworks: Seq[NeuralNetwork], val generation: Int) 
 }
 
 object NetworkClass {
-  val graduationCount: Int = 12
-  val mutationCount: Int = 4
-  val classSize: Int = ((mutationCount + 1) * graduationCount * (graduationCount + 1)) / 2
-
   def evolve(networkClass: NetworkClass): NetworkClass = {
     println(s"Running tests on ${networkClass.neuralNetworks.length} neural networks of generation ${networkClass.generation}...")
     val bestNetworks = networkClass.getBest
@@ -47,11 +43,11 @@ object NetworkClass {
       .filter{ case (a, b) => a.identifier != b.identifier}
 
     val children = pairings
-      .flatMap{ case (a, b) => NeuralNetwork.createChildren(a, b, mutationCount) }
+      .flatMap{ case (a, b) => NeuralNetwork.createChildren(a, b, Parameter.mutationCount) }
       .toSeq
 
     val bestNetworksMutations = bestNetworks
-      .flatMap(nn => NeuralNetwork.mutate(nn, mutationCount).prepended(nn))
+      .flatMap(nn => NeuralNetwork.mutate(nn, Parameter.mutationCount).prepended(nn))
       .toSeq
 
     children.concat(bestNetworksMutations)
@@ -61,10 +57,10 @@ object NetworkClass {
     new NetworkClass(neuralNetworks, generation)
 
   def random(): NetworkClass =
-    NetworkClass(for (_ <- 0 until classSize) yield NeuralNetwork.random())
+    NetworkClass(for (_ <- 0 until Parameter.classSize) yield NeuralNetwork.random())
 
   def printClassProgress(count: Int, replace: Boolean = true): Unit = {
-    val percentage = Math.round(count * 50.0 / classSize).toInt
+    val percentage = Math.round(count * 50.0 / Parameter.classSize).toInt
     print(
       (if (replace) "\r" else "") + "[" +
         "*".repeat(percentage)

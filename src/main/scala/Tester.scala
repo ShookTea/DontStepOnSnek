@@ -1,21 +1,15 @@
 package eu.shooktea.dsos
 
 object Tester {
-  val testIterations = 5
-  val mapWidth = 50
-  val mapHeight = 15
-  val startingMovePoints = 200
-  val movePointsPerFood = 90
-
   def testNetwork(neuralNetwork: NeuralNetwork): TestResult =
     getIterationsResults(neuralNetwork).reduce(_ + _)
 
   private def getIterationsResults(nn: NeuralNetwork): Seq[TestResult] =
-    for (_ <- 1 to testIterations) yield testIteration(nn)
+    for (_ <- 1 to Parameter.testIterations) yield testIteration(nn)
 
   private def testIteration(nn: NeuralNetwork): TestResult = {
-    var board = Board(mapWidth, mapHeight)
-    var movePoints = startingMovePoints
+    var board = Board(Parameter.mapWidth, Parameter.mapHeight)
+    var movePoints = Parameter.startingMovePoints
     var foodEaten = 0
     var movesGoingAway = 0
     var currentDistanceToFood = board.distanceToFood
@@ -33,7 +27,7 @@ object Tester {
         var eaten = false
         if (board.points > foodEaten) {
           foodEaten = board.points
-          movePoints += movePointsPerFood
+          movePoints += Parameter.movePointsPerFood
           eaten = true
         }
         val newCurrentDistanceToFood = board.distanceToFood
