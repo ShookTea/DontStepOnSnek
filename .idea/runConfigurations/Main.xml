@@ -2,6 +2,7 @@
   <configuration default="false" name="Main" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="eu.shooktea.dsos.Main" />
     <module name="DontStepOnSnek" />
+    <option name="PROGRAM_PARAMETERS" value="evolve results.dsos" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="eu.shooktea.dsos.*" />
