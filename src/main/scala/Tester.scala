@@ -1,13 +1,13 @@
 package eu.shooktea.dsos
 
 object Tester {
-  def testNetwork(neuralNetwork: NeuralNetwork): TestResult =
-    getIterationsResults(neuralNetwork).reduce(_ + _)
+  def testNetwork(neuralNetwork: NeuralNetwork, boards: Seq[Board] = getBoards): TestResult =
+    boards.map(board => testIteration(neuralNetwork, board))
+      .reduce(_ + _)
 
-  private def getIterationsResults(nn: NeuralNetwork): Seq[TestResult] =
-    for (_ <- 1 to Parameter.testIterations) yield testIteration(nn)
+  private def getBoards: Seq[Board] = for (_ <- 1 to Parameter.testIterations) yield Board(Parameter.mapWidth, Parameter.mapHeight)
 
-  private def testIteration(nn: NeuralNetwork, startBoard: Board = Board(Parameter.mapWidth, Parameter.mapHeight)): TestResult = {
+  private def testIteration(nn: NeuralNetwork, startBoard: Board): TestResult = {
     var board = startBoard.copy
     var movePoints = Parameter.startingMovePoints
     var foodEaten = 0
