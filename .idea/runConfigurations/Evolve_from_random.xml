@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Main" type="Application" factoryName="Application">
+  <configuration default="false" name="Evolve from random" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="eu.shooktea.dsos.Main" />
     <module name="DontStepOnSnek" />
     <option name="PROGRAM_PARAMETERS" value="evolve results.dsos" />
