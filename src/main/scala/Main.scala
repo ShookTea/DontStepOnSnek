@@ -4,7 +4,7 @@ import scala.annotation.tailrec
 
 object Main {
   def main(args: Array[String]): Unit = {
-    val resultingClass = runIterations(20)
+    val resultingClass = runIterations(3)
 
     val bestNetwork = resultingClass.getBest.head._1
     var board = Board(50, 15)

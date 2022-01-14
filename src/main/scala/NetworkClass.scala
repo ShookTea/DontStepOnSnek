@@ -6,9 +6,10 @@ class NetworkClass(val neuralNetworks: Seq[NeuralNetwork], val generation: Int) 
 
   private def runTests(): Seq[(NeuralNetwork, TestResult)] = {
     NetworkClass.printClassProgress(0, replace = false)
+    val boards = for (_ <- 1 to Parameter.testIterations) yield Board(Parameter.mapWidth, Parameter.mapHeight)
     val results = neuralNetworks.zipWithIndex.map{
       case (nn, index) =>
-        val result = Tester.testNetwork(nn)
+        val result = Tester.testNetwork(nn, boards)
         NetworkClass.printClassProgress(index)
         (nn, result)
     }
