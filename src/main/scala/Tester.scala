@@ -7,8 +7,8 @@ object Tester {
   private def getIterationsResults(nn: NeuralNetwork): Seq[TestResult] =
     for (_ <- 1 to Parameter.testIterations) yield testIteration(nn)
 
-  private def testIteration(nn: NeuralNetwork): TestResult = {
-    var board = Board(Parameter.mapWidth, Parameter.mapHeight)
+  private def testIteration(nn: NeuralNetwork, startBoard: Board = Board(Parameter.mapWidth, Parameter.mapHeight)): TestResult = {
+    var board = startBoard.copy
     var movePoints = Parameter.startingMovePoints
     var foodEaten = 0
     var movesGoingAway = 0
@@ -34,6 +34,7 @@ object Tester {
         if (newCurrentDistanceToFood > currentDistanceToFood && !eaten) {
           movesGoingAway += 1
         }
+        currentDistanceToFood = newCurrentDistanceToFood
       }
     } catch {
       case e: GameOverException =>

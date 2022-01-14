@@ -97,6 +97,8 @@ class Board(width: Int, height: Int, snake: Snake, food: Point) {
       bodyDistance.getOrElse(mapSize) / mapSize,
     )
   }
+
+  def copy: Board = new Board(width, height, snake, food)
 }
 object Board {
   def apply(width: Int, height: Int): Board = {
