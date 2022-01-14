@@ -10,8 +10,6 @@ object Utils {
 
   def max(values: Double*): Double = values.max
 
-  def randomIdentifier(): String = UUID.randomUUID().toString
-
   def randomWeight(): Double = 2.0 * (random.nextDouble() - 0.5)
 }
 

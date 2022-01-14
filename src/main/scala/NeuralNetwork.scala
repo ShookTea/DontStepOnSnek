@@ -3,11 +3,14 @@ package eu.shooktea.dsos
 import NeuralNetwork._
 import TypeAddons._
 
+import java.util.UUID
+
 class NeuralNetwork(
                      val weights: Seq[Double],
-                     val identifier: String,
                      val generation: Int,
+                     val identifier: String = UUID.randomUUID().toString
                    ) {
+
   if (weights.length != weightCount) {
     throw new Exception("Invalid weight count")
   }
@@ -48,7 +51,6 @@ object NeuralNetwork {
 
   def random(): NeuralNetwork = new NeuralNetwork(
     for (_ <- 1 to weightCount) yield Utils.randomWeight(),
-    Utils.randomIdentifier(),
     1,
   )
 
@@ -57,7 +59,6 @@ object NeuralNetwork {
 
   def mutate(nn: NeuralNetwork): NeuralNetwork = new NeuralNetwork(
     mutateWeights(nn.weights),
-    Utils.randomIdentifier(),
     nn.generation + 1,
   )
 
@@ -71,14 +72,12 @@ object NeuralNetwork {
       if (i == 0) child
       else new NeuralNetwork(
         mutateWeights(child.weights),
-        Utils.randomIdentifier(),
         child.generation,
       )
   }
 
   private def createChild(a: NeuralNetwork, b: NeuralNetwork): NeuralNetwork = new NeuralNetwork(
     mixWeights(a, b),
-    Utils.randomIdentifier(),
     Math.max(a.generation, b.generation) + 1,
   )
 
