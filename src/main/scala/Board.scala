@@ -106,6 +106,8 @@ object Board {
     new Board(width, height, snake, randomFood(width, height, snake))
   }
 
+  def apply(): Board = Board(Parameter.mapWidth, Parameter.mapHeight)
+
   def randomFood(width: Int, height: Int, snake: Snake): Point =
     Point.matrix(width, height)
     .without(snake)

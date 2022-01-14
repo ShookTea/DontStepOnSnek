@@ -9,9 +9,9 @@ object Parameter {
   val mapHeight: Int = 15
 
   /** How many move points NN gets on start? */
-  val startingMovePoints: Int = 200
+  val startingMovePoints: Int = mapWidth * mapHeight
   /** How many move points NN receives after eating food? */
-  val movePointsPerFood: Int = 90
+  val movePointsPerFood: Int = mapWidth * mapHeight
 
   /** How many best NNs graduate to next class? */
   val graduationCount: Int = 15
@@ -21,7 +21,7 @@ object Parameter {
   val classSize: Int = ((mutationCount + 1) * graduationCount * (graduationCount + 1)) / 2
 
   /** Weights of test results for final grade */
-  val foodWeight: Double = 9.0
+  val foodWeight: Double = 14.0
   val remainingMovesWeight: Double = 0.1
   val movesGoingAwayWeight: Double = -0.25
 }
