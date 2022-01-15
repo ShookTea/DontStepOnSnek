@@ -1,17 +1,17 @@
 package eu.shooktea.dsos
 
 import java.io.{DataInputStream, DataOutputStream, FileInputStream, FileOutputStream}
-import java.nio.file.Paths
+import java.nio.file.{Files, Paths, StandardCopyOption}
 import java.util.UUID
 
 object Persistence {
   def save(networkClass: NetworkClass, path: String): Unit = {
     val file = Paths.get(path).toFile
     print("Saving...")
-    if (file.exists())
+    if (file.exists()) {
+      Files.copy(file.toPath, file.toPath.resolveSibling(file.getName + ".old"), StandardCopyOption.REPLACE_EXISTING)
       file.delete()
-    else
-      file.createNewFile()
+    } else file.createNewFile()
 
     val dos = new DataOutputStream(
       new FileOutputStream(file)
