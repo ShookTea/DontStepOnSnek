@@ -48,7 +48,7 @@ object Persistence {
     val bestCount = dis.readInt()
     val networks = for (_ <- 1 to bestCount) yield loadNeuralNetwork(dis)
 
-    new NetworkClass(networks, generation)
+    new NetworkClass(networks, generation, createdWithBestNnsAlready = true)
   }
 
   private def saveResultEntry(dos: DataOutputStream)(entry: (NeuralNetwork, TestResult)) : Unit = entry match {

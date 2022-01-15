@@ -1,7 +1,14 @@
 package eu.shooktea.dsos
 
-class NetworkClass(val neuralNetworks: Seq[NeuralNetwork], val generation: Int) {
-  private var best: Option[Seq[(NeuralNetwork, TestResult)]] = None
+class NetworkClass(
+                    val neuralNetworks: Seq[NeuralNetwork],
+                    val generation: Int,
+                    val createdWithBestNnsAlready: Boolean = false,
+                  ) {
+
+  private var best: Option[Seq[(NeuralNetwork, TestResult)]] =
+    if (createdWithBestNnsAlready) Some(neuralNetworks map { nn => (nn, TestResult.empty)})
+    else None
 
   def getBest: Seq[(NeuralNetwork, TestResult)] = {
     if (best.isEmpty) {

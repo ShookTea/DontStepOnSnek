@@ -11,3 +11,7 @@ case class TestResult(foodEaten: Int, remainingMovePoints: Int, movesGoingAway: 
 
   override def compare(that: TestResult): Int = grade.compareTo(that.grade)
 }
+
+object TestResult {
+  val empty: TestResult = TestResult(0, 0, 0)
+}
