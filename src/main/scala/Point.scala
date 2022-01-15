@@ -10,6 +10,9 @@ case class Point(x: Int, y: Int) {
   def multiplyByScalar(scalar: Int): Point = Point(x * scalar, y * scalar)
   def *(scalar: Int): Point = multiplyByScalar(scalar)
 
+  def divideByScalar(scalar: Int): Point = Point(x / scalar, y / scalar)
+  def /(scalar: Int): Point = divideByScalar(scalar)
+
   def rotateLeft: Point = Point(
     if (x == 0) y else 0,
     if (y == 0) -x else 0,

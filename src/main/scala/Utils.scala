@@ -15,6 +15,7 @@ object Utils {
 object TypeAddons {
   implicit class IntAddons(int: Int) {
     def *(point: Point): Point = point * int
+    def /(point: Point): Point = Point(int / point.x, int / point.y)
   }
 
   implicit class DoubleAddons(double: Double) {

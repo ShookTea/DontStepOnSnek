@@ -1,5 +1,7 @@
 package eu.shooktea.dsos
 
+import gui.GameView
+
 object Main {
   def main(args: Array[String]): Unit = {
     if (args.head == "evolve") runEvolutionsFromStart(args(1))
@@ -32,6 +34,8 @@ object Main {
   private def runFromFile(path: String): Unit = {
     val classFromFile = Persistence.load(path)
     val bestNeuralNetwork = classFromFile.getBest.head._1
+
+    GameView(bestNeuralNetwork).start()
 
     var board = Board()
     var movePoints = Parameter.startingMovePoints
