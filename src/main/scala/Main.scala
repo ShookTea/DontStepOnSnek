@@ -36,24 +36,5 @@ object Main {
     val bestNeuralNetwork = classFromFile.getBest.head._1
 
     GameView(bestNeuralNetwork).start()
-
-    var board = Board()
-    var movePoints = Parameter.startingMovePoints
-    var currentPoints = 0
-    while (movePoints > 0) {
-      println(board)
-      Thread.sleep(75)
-      movePoints -= 1
-      val nextMove = bestNeuralNetwork(board.getNeuralNetworkInput)
-      board =
-        if (nextMove.shouldGoLeft()) board.moveLeft()
-        else if (nextMove.shouldGoRight()) board.moveRight()
-        else board.moveForward()
-
-      if (board.points > currentPoints) {
-        currentPoints = board.points
-        movePoints += Parameter.movePointsPerFood
-      }
-    }
   }
 }

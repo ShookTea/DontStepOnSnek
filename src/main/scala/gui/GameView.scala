@@ -9,11 +9,10 @@ import TypeAddons._
 
 class GameView(nn: NeuralNetwork) extends JPanel {
   var currentBoard: Board = Board()
+  val frame = new JFrame()
 
   def start(): Unit = {
-    val frame = new JFrame()
     frame setDefaultCloseOperation WindowConstants.EXIT_ON_CLOSE
-    frame setTitle s"Don't step on snek - simulation on snake from generation ${nn.generation}"
     frame add this
 
     val mapSize: Point = Point(Parameter.mapWidth + 2, Parameter.mapHeight + 2)
@@ -50,7 +49,12 @@ class GameView(nn: NeuralNetwork) extends JPanel {
       }
 
       this.repaint()
+      refreshTitle(currentPoints, movePoints)
     }
+  }
+
+  private def refreshTitle(points: Int, remainingMoves: Int): Unit = {
+    frame setTitle s"Don't step on snek - points: $points, remaining moves: $remainingMoves"
   }
 
   override def paintComponent(g: Graphics): Unit = {
