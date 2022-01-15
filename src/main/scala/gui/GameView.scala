@@ -3,10 +3,13 @@ package gui
 
 import gui.GameView._
 
-import java.awt.{Color, Toolkit}
+import java.awt.{Color, Graphics, Graphics2D, Toolkit}
 import javax.swing.{JFrame, JPanel, WindowConstants}
+import TypeAddons._
 
 class GameView(nn: NeuralNetwork) extends JPanel {
+  var currentBoard: Board = Board()
+
   def start(): Unit = {
     val frame = new JFrame()
     frame setDefaultCloseOperation WindowConstants.EXIT_ON_CLOSE
@@ -14,7 +17,7 @@ class GameView(nn: NeuralNetwork) extends JPanel {
     frame add this
 
     val mapSize: Point = Point(Parameter.mapWidth + 2, Parameter.mapHeight + 2)
-    val frameSize: Point = mapSize * tileSizeInPixels
+    val frameSize: Point = mapSize * tileSizeInPixels + Point(margin, margin) * 2
 
     val screenSize: Point = Toolkit.getDefaultToolkit.getScreenSize match {
       case d => Point(d.width, d.height)
@@ -26,9 +29,30 @@ class GameView(nn: NeuralNetwork) extends JPanel {
 
     frame setVisible true
   }
+
+  override def paintComponent(g: Graphics): Unit = {
+    super.paintComponent(g)
+    val g2 = g.asInstanceOf[Graphics2D]
+
+    for (p <- Point(0, 0) until Point(Parameter.mapWidth + 2, Parameter.mapHeight + 2)) {
+      val drawPoint: Point = tileSizeInPixels * p
+      val mapPoint = p - Point(1, 1)
+
+      g2.setColor(
+        if (mapPoint.x < 0 || mapPoint.y < 0 || mapPoint.x >= Parameter.mapWidth || mapPoint.y >= Parameter.mapHeight) Color.black
+        else if (p == currentBoard.food) Color.yellow
+        else if (p in currentBoard.snake) Color.green
+        else Color.white
+      )
+      g2.fillRect(margin + drawPoint.x, margin + drawPoint.y, tileSizeInPixels, tileSizeInPixels)
+      g2 setColor new Color(0, 0, 0, 15)
+      g2.drawRect(margin + drawPoint.x, margin + drawPoint.y, tileSizeInPixels, tileSizeInPixels)
+    }
+  }
 }
 
 object GameView {
   val tileSizeInPixels: Int = 10
+  val margin: Int = 40
   def apply(nn: NeuralNetwork): GameView = new GameView(nn)
 }

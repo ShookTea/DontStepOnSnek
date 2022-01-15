@@ -50,6 +50,9 @@ case class Point(x: Int, y: Int) {
     case (otherX: Int, otherY: Int) => x == otherX && y == otherY
     case _ => false
   }
+
+  def until(other: Point): Seq[Point] =
+    for (x <- this.x until other.x; y <- this.y until other.y) yield Point(x, y)
 }
 
 object Point {

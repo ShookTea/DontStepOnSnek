@@ -3,7 +3,7 @@ package eu.shooktea.dsos
 import Utils._
 import TypeAddons._
 
-class Board(width: Int, height: Int, snake: Snake, food: Point) {
+class Board(width: Int, height: Int, val snake: Snake, val food: Point) {
   override def toString: String =
     "#".repeat(width + 2) + "\n" + boardToString.mkString("\n") + "\n" + "#".repeat(width + 2)
 
