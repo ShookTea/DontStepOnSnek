@@ -28,6 +28,29 @@ class GameView(nn: NeuralNetwork) extends JPanel {
     frame setLocation (position.x, position.y)
 
     frame setVisible true
+    runSimulation()
+  }
+
+  private def runSimulation(): Unit = {
+    var movePoints = Parameter.startingMovePoints
+    var currentPoints = 0
+    while (movePoints > 0) {
+      movePoints -= 1
+      Thread.sleep(75)
+
+      val nextMove = nn(currentBoard.getNeuralNetworkInput)
+      currentBoard =
+        if (nextMove.shouldGoLeft()) currentBoard.moveLeft()
+        else if (nextMove.shouldGoRight()) currentBoard.moveRight()
+        else currentBoard.moveForward()
+
+      if (currentBoard.points > currentPoints) {
+        currentPoints = currentBoard.points
+        movePoints += Parameter.movePointsPerFood
+      }
+
+      this.repaint()
+    }
   }
 
   override def paintComponent(g: Graphics): Unit = {
@@ -40,8 +63,8 @@ class GameView(nn: NeuralNetwork) extends JPanel {
 
       g2.setColor(
         if (mapPoint.x < 0 || mapPoint.y < 0 || mapPoint.x >= Parameter.mapWidth || mapPoint.y >= Parameter.mapHeight) Color.black
-        else if (p == currentBoard.food) Color.yellow
-        else if (p in currentBoard.snake) Color.green
+        else if (mapPoint == currentBoard.food) Color.gray
+        else if (mapPoint in currentBoard.snake) Color.green
         else Color.white
       )
       g2.fillRect(margin + drawPoint.x, margin + drawPoint.y, tileSizeInPixels, tileSizeInPixels)
