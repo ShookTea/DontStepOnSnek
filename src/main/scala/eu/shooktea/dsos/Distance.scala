@@ -12,3 +12,7 @@ case class Distance(
     case _ => throw new IndexOutOfBoundsException
   }
 }
+
+object Distance {
+  val fieldsCount: Int = 3
+}

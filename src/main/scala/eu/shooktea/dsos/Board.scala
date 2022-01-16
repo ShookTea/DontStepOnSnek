@@ -48,29 +48,33 @@ class Board(width: Int, height: Int, val snake: Snake, val food: Point) {
     new Board(width, height, newSnake, newFood)
   }
 
-  def getNeuralNetworkInput: Input = {
+  def getNeuralNetworkInput: Input = Input(
+    getDistanceGroupForPoint(snake.head)
+  )
+
+  def getDistanceGroupForPoint(point: Point): DistanceGroup = {
     val forwardDirection = snake.head - snake.tail.head
     val isHorizontal = forwardDirection.x != 0
     val forwardDistance = 1.0 * (if (isHorizontal) width else height)
     val sideDistance = 1.0 * (if (isHorizontal) height else width)
     val angledDistance = Math.sqrt(forwardDistance * forwardDistance + sideDistance * sideDistance)
 
-    Input(
-      getDistanceForDirection(forwardDirection, forwardDistance, isAngled = false),
-      getDistanceForDirection(forwardDirection.backwards, forwardDistance, isAngled = false),
-      getDistanceForDirection(forwardDirection.rotateLeft, sideDistance, isAngled = false),
-      getDistanceForDirection(forwardDirection.rotateRight, sideDistance, isAngled = false),
-      getDistanceForDirection(forwardDirection.halfLeft, angledDistance, isAngled = true),
-      getDistanceForDirection(forwardDirection.halfRight, angledDistance, isAngled = true),
-      getDistanceForDirection(forwardDirection.rotateLeft.halfLeft, angledDistance, isAngled = true),
-      getDistanceForDirection(forwardDirection.rotateRight.halfRight, angledDistance, isAngled = true),
+    DistanceGroup(
+      getDistanceForDirection(point, forwardDirection, forwardDistance, isAngled = false),
+      getDistanceForDirection(point, forwardDirection.backwards, forwardDistance, isAngled = false),
+      getDistanceForDirection(point, forwardDirection.rotateLeft, sideDistance, isAngled = false),
+      getDistanceForDirection(point, forwardDirection.rotateRight, sideDistance, isAngled = false),
+      getDistanceForDirection(point, forwardDirection.halfLeft, angledDistance, isAngled = true),
+      getDistanceForDirection(point, forwardDirection.halfRight, angledDistance, isAngled = true),
+      getDistanceForDirection(point, forwardDirection.rotateLeft.halfLeft, angledDistance, isAngled = true),
+      getDistanceForDirection(point, forwardDirection.rotateRight.halfRight, angledDistance, isAngled = true),
     )
   }
 
-  private def getDistanceForDirection(direction: Point, mapSize: Double, isAngled: Boolean): Distance = {
+  private def getDistanceForDirection(point: Point, direction: Point, mapSize: Double, isAngled: Boolean): Distance = {
     val multiplier = if (isAngled) Math.sqrt(2.0) else 1.0
 
-    var currentPoint = snake.head
+    var currentPoint = point
     var foodDistance: Option[Double] = None
     var bodyDistance: Option[Double] = None
     var wallDistance: Option[Double] = None
