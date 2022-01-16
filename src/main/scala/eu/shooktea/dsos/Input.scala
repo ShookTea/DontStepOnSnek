@@ -11,3 +11,7 @@ case class Input(
       case _ => throw new IndexOutOfBoundsException
     }
 }
+
+object Input {
+  val fieldsCount: Int = DistanceGroup.fieldsCount * 2
+}

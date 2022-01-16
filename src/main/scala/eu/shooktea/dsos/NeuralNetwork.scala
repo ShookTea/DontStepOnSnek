@@ -41,8 +41,8 @@ class NeuralNetwork(
 }
 
 object NeuralNetwork {
-  val inputNeurons: Int = 24
-  val hiddenNeurons: Int = 14
+  val inputNeurons: Int = 48
+  val hiddenNeurons: Int = 26
   val outputNeurons: Int = 3
 
   val weightCount: Int = inputNeurons * hiddenNeurons + hiddenNeurons * outputNeurons
