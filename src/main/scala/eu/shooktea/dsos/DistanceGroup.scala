@@ -11,14 +11,14 @@ case class DistanceGroup(
                           backwardRight: Distance
                         ) {
   def apply(index: Int): Double = (index - (index % Distance.fieldsCount)) / Distance.fieldsCount match {
-    case 0 => forward(index % 3)
-    case 1 => backward(index % 3)
-    case 2 => left(index % 3)
-    case 3 => right(index % 3)
-    case 4 => forwardLeft(index % 3)
-    case 5 => forwardRight(index % 3)
-    case 6 => backwardLeft(index % 3)
-    case 7 => backwardRight(index % 3)
+    case 0 => forward(index % Distance.fieldsCount)
+    case 1 => backward(index % Distance.fieldsCount)
+    case 2 => left(index % Distance.fieldsCount)
+    case 3 => right(index % Distance.fieldsCount)
+    case 4 => forwardLeft(index % Distance.fieldsCount)
+    case 5 => forwardRight(index % Distance.fieldsCount)
+    case 6 => backwardLeft(index % Distance.fieldsCount)
+    case 7 => backwardRight(index % Distance.fieldsCount)
     case _ => throw new IndexOutOfBoundsException
   }
 }

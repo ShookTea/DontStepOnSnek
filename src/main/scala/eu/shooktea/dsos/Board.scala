@@ -49,7 +49,8 @@ class Board(width: Int, height: Int, val snake: Snake, val food: Point) {
   }
 
   def getNeuralNetworkInput: Input = Input(
-    getDistanceGroupForPoint(snake.head)
+    getDistanceGroupForPoint(snake.head),
+    getDistanceGroupForPoint(snake.tail.head),
   )
 
   def getDistanceGroupForPoint(point: Point): DistanceGroup = {
