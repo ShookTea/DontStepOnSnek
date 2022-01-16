@@ -19,15 +19,29 @@ class NeuralNetwork(
     Output(calculateOutputNeurons(input))
 
   private def calculateOutputNeurons(input: Input): Seq[Double] =
-    getOutputNeurons(getHiddenNeurons1(input))
+    getOutputNeurons(
+      getHiddenNeurons2(
+        getHiddenNeurons1(
+          input
+        )
+      )
+    )
 
-  private def getOutputNeurons(hidden: Seq[Double]): Seq[Double] =
+  private def getOutputNeurons(hidden2: Seq[Double]): Seq[Double] =
     for (o <- 0 until outputNeurons)
-      yield getPartsForOutputNeuron(o, hidden).sum.sigmoid
+      yield getPartsForOutputNeuron(o, hidden2).sum.sigmoid
 
-  private def getPartsForOutputNeuron(o: Int, hidden: Seq[Double]): Seq[Double] =
-    for (h <- 0 until hiddenNeurons1)
-      yield hidden(h) * weights(inputNeurons * hiddenNeurons1 + o * hiddenNeurons1 + h)
+  private def getPartsForOutputNeuron(o: Int, hidden2: Seq[Double]): Seq[Double] =
+    for (h2 <- 0 until hiddenNeurons2)
+      yield hidden2(h2) * weights(inputNeurons * hiddenNeurons1 + hiddenNeurons1 * hiddenNeurons2 + o * hiddenNeurons2 + h2)
+
+  private def getHiddenNeurons2(hidden1: Seq[Double]): Seq[Double] =
+    for (h2 <- 0 until hiddenNeurons2)
+      yield getPartsForHiddenNeuron2(h2, hidden1).sum.sigmoid
+
+  private def getPartsForHiddenNeuron2(h2: Int, hidden1: Seq[Double]): Seq[Double] =
+    for (h1 <- 0 until hiddenNeurons1)
+      yield hidden1(h1) * weights(inputNeurons * hiddenNeurons1 + h2 * hiddenNeurons1 + h1)
 
   private def getHiddenNeurons1(input: Input): Seq[Double] =
     for (h <- 0 until hiddenNeurons1)
