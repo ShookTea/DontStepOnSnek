@@ -19,21 +19,21 @@ class NeuralNetwork(
     Output(calculateOutputNeurons(input))
 
   private def calculateOutputNeurons(input: Input): Seq[Double] =
-    getOutputNeurons(getHiddenNeurons(input))
+    getOutputNeurons(getHiddenNeurons1(input))
 
   private def getOutputNeurons(hidden: Seq[Double]): Seq[Double] =
     for (o <- 0 until outputNeurons)
       yield getPartsForOutputNeuron(o, hidden).sum.sigmoid
 
   private def getPartsForOutputNeuron(o: Int, hidden: Seq[Double]): Seq[Double] =
-    for (h <- 0 until hiddenNeurons)
-      yield hidden(h) * weights(inputNeurons * hiddenNeurons + o * hiddenNeurons + h)
+    for (h <- 0 until hiddenNeurons1)
+      yield hidden(h) * weights(inputNeurons * hiddenNeurons1 + o * hiddenNeurons1 + h)
 
-  private def getHiddenNeurons(input: Input): Seq[Double] =
-    for (h <- 0 until hiddenNeurons)
-      yield getPartsForHiddenNeuron(h, input).sum.sigmoid
+  private def getHiddenNeurons1(input: Input): Seq[Double] =
+    for (h <- 0 until hiddenNeurons1)
+      yield getPartsForHiddenNeuron1(h, input).sum.sigmoid
 
-  private def getPartsForHiddenNeuron(h: Int, input: Input): Seq[Double] =
+  private def getPartsForHiddenNeuron1(h: Int, input: Input): Seq[Double] =
     for (i <- 0 until inputNeurons)
       yield input(i) * weights(h * inputNeurons + i)
 
@@ -42,10 +42,11 @@ class NeuralNetwork(
 
 object NeuralNetwork {
   val inputNeurons: Int = 48
-  val hiddenNeurons: Int = 26
+  val hiddenNeurons1: Int = 26
+  val hiddenNeurons2: Int = 26
   val outputNeurons: Int = 3
 
-  val weightCount: Int = inputNeurons * hiddenNeurons + hiddenNeurons * outputNeurons
+  val weightCount: Int = inputNeurons * hiddenNeurons1 + hiddenNeurons1 * hiddenNeurons2 + hiddenNeurons1 * outputNeurons
 
   val mutationProbability: Double = 0.07
 
